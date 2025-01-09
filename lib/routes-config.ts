@@ -9,37 +9,53 @@ export type EachRoute = {
 
 export const ROUTES: EachRoute[] = [
   {
-    title: "Getting Started",
-    href: "/getting-started",
+    title: "开源项目加入流程",
+    href: "/project-inclusion",
     noLink: true,
     items: [
-      { title: "Introduction", href: "/introduction" },
+      { title: "项目注册", href: "/register" },
+      { title: "项目审核", href: "/review" },
       {
-        title: "Installation",
-        href: "/installation",
-      },
-      { title: "Quick Start Guide", href: "/quick-start-guide" },
-      {
-        title: "Project Structure",
-        href: "/project-structure",
-      },
-      {
-        title: "Components",
-        href: "/components",
+        title: "添加导师/发布任务",
+        href: "/mentor-and-tasks",
+        noLink: true,
         items: [
-          { title: "Stepper", href: "/stepper" },
-          { title: "Tabs", href: "/tabs" },
-          { title: "Note", href: "/note" },
-          { title: "Code Block", href: "/code-block" },
-          { title: "Image & Link", href: "/image-link" },
-          { title: "Custom", href: "/custom" },
+          { title: "发布任务的要求", href: "/requirement" },
+          { title: "任务分级", href: "/task-level" },
+          { title: "任务Issue模板", href: "/template" },
+          { title: "任务Issue/PR标签管理与分值统计", href: "/labels" },
         ],
       },
-      { title: "Themes", href: "/themes" },
       {
-        title: "Customize",
-        href: "/customize",
+        title: "任务完成情况定期评审",
+        href: "/task-periodic-review",
       },
+    ],
+  },
+  {
+    title: "学生实习流程",
+    href: "/student",
+    noLink: true,
+    items: [
+      { title: "学生注册与审核", href: "/register" },
+      {
+        title: "任务领取与确认",
+        href: "/assign",
+      },
+      { title: "导师辅导学生", href: "/guidance" },
+      {
+        title: "提交成果",
+        href: "/commit",
+      },
+      {
+        title: "积分统计与奖金发放",
+        href: "/statistic",
+      },
+      {
+        title: "实习证明申请",
+        href: "/certificate",
+      },
+
     ],
   },
 ];
