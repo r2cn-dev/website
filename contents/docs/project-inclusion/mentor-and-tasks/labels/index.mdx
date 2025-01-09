@@ -1,0 +1,15 @@
+---
+title: 任务Issue/PR标签管理与分值统计
+description: This guide provides instructions on customizing our application.
+---
+
+
+## 添加标签
+需为issue/PR设置标签 `r2cn-x`，以便在创建issue/PR时进行添加，方便后续统计学生积分情况。
+标签后需要添加任务的分值 如： `r2cn-10` 表示该任务为`10`分
+
+## 分值统计
+1. 在代码托管平台为相应项目部署webhook，统计学生和导师的动作。
+2. 将webhook获得的数据存储在云数据库中。
+3. 每月底对数据库中的数据进行统计，得出学生的积分情况，导出表格。
+4. 运营人员根据积分算出学生奖金。
