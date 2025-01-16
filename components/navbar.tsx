@@ -18,16 +18,8 @@ export const NAVLINKS = [
     href: "/blog",
   },
   {
-    title: "Examples",
-    href: "#",
-  },
-  {
-    title: "Guides",
-    href: "#",
-  },
-  {
     title: "Community",
-    href: "https://github.com/r2cn-dev",
+    href: "https://github.com/orgs/r2cn-dev/discussions",
   },
 ];
 
