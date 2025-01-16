@@ -23,20 +23,20 @@ export default function Home() {
       </p>
       <div className="flex flex-row items-center gap-5">
         <Link
-          href={`/docs${page_routes[0].href}`}
+          href={`https://test-portal-1.summer-ospp.ac.cn/r2cnLogin`}
           className={buttonVariants({ className: "px-6", size: "lg" })}
         >
-          Get Stared
+          立即注册
         </Link>
         <Link
-          href="/blog"
+          href={`/docs${page_routes[0].href}`}
           className={buttonVariants({
             variant: "secondary",
             className: "px-6",
             size: "lg",
           })}
         >
-          Read Blog
+          阅读文档
         </Link>
       </div>
     </div>
