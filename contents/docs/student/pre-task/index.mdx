@@ -1,0 +1,104 @@
+---
+title: 测试任务
+description: 参与到 R2CN 实习之前，学生需要完成一个测试任务，以便证明已经具备了基本 Rust 编程语言能力和熟练掌握 Git 命令。
+---
+
+## 测试任务
+
+参与到 R2CN 实习之前，学生需要完成一个测试任务，证明已经基本具备 Rust 编程语言的开发能力和熟练掌握 Git 命令，这两项是参与 R2CN 必不可少的基本技能。
+
+### 任务项目
+
+[Mega](https://github.com/web3infra-foundation/mega) 项目是使用 Rust 编程语言开发的兼容 Git 的 Monorepo 引擎，在这个项目中有一个模块 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 是用 Rust 编程语言实现的 Git 命令。 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 目前只实现了部分 Git 子命令，并且没有完成 Git 子命令的所有参数。
+
+```bash
+$ libra --help
+Simulates git commands
+
+Usage: libra <COMMAND>
+
+Commands:
+  init     Initialize a new repository
+  clone    Clone a repository into a new directory
+  add      Add file contents to the index
+  rm       Remove files from the working tree and from the index
+  restore  Restore working tree files
+  status   Show the working tree status
+  log      Show commit logs
+  diff    Show changes between commits, commit and working tree, etc
+  branch   List, create, or delete branches
+  commit   Record changes to the repository
+  switch   Switch branches
+  merge    Merge changes
+  push     Update remote refs along with associated objects
+  fetch    Download objects and refs from another repository
+  pull     Fetch from and integrate with another repository or a local branch
+  remote   Manage set of tracked repositories
+  help     Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
+```
+
+### 任务要求
+
+#### libra 功能补全
+
+测试任务是对比 Git 的命令及参数，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 项目补全缺失的 Git 命令及参数。
+
+如，`libra` 的 `init` 命令不支持任何参数,
+
+```bash
+libra init -h
+Initialize a new repository
+
+Usage: libra init
+
+Options:
+  -h, --help  Print help
+```
+
+而 Git 的 `init` 命令支持 `--bare` 等多个参数,
+
+```bash
+git init -h
+usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
+                [--separate-git-dir <git-dir>] [--object-format=<format>]
+                [-b <branch-name> | --initial-branch=<branch-name>]
+                [--shared[=<permissions>]] [<directory>]
+
+    --template <template-directory>
+                          directory from which templates will be used
+    --bare                create a bare repository
+    --shared[=<permissions>]
+                          specify that the git repository is to be shared amongst several users
+    -q, --quiet           be quiet
+    --separate-git-dir <gitdir>
+                          separate git dir from working tree
+    -b, --initial-branch <name>
+                          override the name of the initial branch
+    --object-format <hash>
+                          specify the hash algorithm to use
+```
+
+可以选择为 `libra` 实现一个 `init` 的参数（如 --bare）作为测试任务。
+
+#### libra 测试用例补充
+
+### 任务要求
+
+<Stepper>
+  <StepperItem title="第一步：创建测试任务 Issue">
+  </StepperItem>
+  <StepperItem title="第二步：同 Maintainer 讨论实现方案">
+  </StepperItem>
+  <StepperItem title="第三步：实现功能，提交 Pull Request">
+  </StepperItem>
+  <StepperItem title="第四步：Maintainer Review 后合入 Pull Request">
+  </StepperItem>
+  <StepperItem title="第五步：关闭 Issue">
+  </StepperItem>
+</Stepper>
+
+### 参考资料

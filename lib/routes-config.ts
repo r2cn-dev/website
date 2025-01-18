@@ -37,12 +37,22 @@ export const ROUTES: EachRoute[] = [
     href: "/student",
     noLink: true,
     items: [
-      { title: "学生注册与审核", href: "/register" },
+      {
+        title: "测试任务",
+        href: "/pre-task",
+      },
+      {
+        title: "学生注册与审核",
+        href: "/register",
+      },
       {
         title: "任务领取与确认",
         href: "/assign",
       },
-      { title: "导师辅导学生", href: "/guidance" },
+      {
+        title: "导师辅导学生",
+        href: "/guidance",
+      },
       {
         title: "提交成果",
         href: "/commit",
@@ -55,7 +65,6 @@ export const ROUTES: EachRoute[] = [
         title: "实习证明申请",
         href: "/certificate",
       },
-
     ],
   },
 ];
