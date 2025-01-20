@@ -23,7 +23,7 @@ export default function Home() {
       </p>
       <div className="flex flex-row items-center gap-5">
         <Link
-          href={`https://test-portal-1.summer-ospp.ac.cn/r2cnLogin`}
+          href={`${process.env.PORTAL_LOGIN}`}
           className={buttonVariants({ className: "px-6", size: "lg" })}
         >
           学生注册
