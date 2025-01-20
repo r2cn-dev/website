@@ -20,10 +20,10 @@ const monoFont = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AriaDocs - Template",
-  metadataBase: new URL("https://ariadocs.vercel.app/"),
+  title: "R2CN - RISC-V Rust for Cloud Native 开源实习计划",
+  metadataBase: new URL("https://r2cn.dev"),
   description:
-    "This comprehensive documentation template, crafted with Next.js and available as open-source, delivers a sleek and responsive design, tailored to meet all your project documentation requirements.",
+    "R2CN（RISC-V Rust for Cloud Native）开源实习计划由中科院软件所、华为等机构联合主办，目标是培养RISC-V、Rust技术领域人才、构建RISC-V云原生技术栈创新生态。 R2CN开源实习计划通过培养精通Rust编程语言、熟悉RISC-V架构的开源开发者，为开源生态发展培养人才。",
 };
 
 export default function RootLayout({

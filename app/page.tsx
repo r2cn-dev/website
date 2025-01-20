@@ -11,7 +11,7 @@ export default function Home() {
         target="_blank"
         className="mb-5 sm:text-lg flex items-center gap-2 underline underline-offset-4 sm:-mt-12"
       >
-        在GitHub上参与{" "}
+        开源项目注册{" "}
         <MoveUpRightIcon className="w-4 h-4 font-extrabold" />
       </Link>
       <h1 className="text-3xl font-bold mb-4 sm:text-6xl">
@@ -26,7 +26,7 @@ export default function Home() {
           href={`https://test-portal-1.summer-ospp.ac.cn/r2cnLogin`}
           className={buttonVariants({ className: "px-6", size: "lg" })}
         >
-          立即注册
+          学生注册
         </Link>
         <Link
           href={`/docs${page_routes[0].href}`}
@@ -36,7 +36,7 @@ export default function Home() {
             size: "lg",
           })}
         >
-          阅读文档
+          帮助文档
         </Link>
       </div>
     </div>
