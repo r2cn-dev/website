@@ -15,6 +15,7 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "项目注册", href: "/register" },
       { title: "项目审核", href: "/review" },
+      { title: "安装R2CN-Bot", href: "/bot-installation" },
       {
         title: "添加导师/发布任务",
         href: "/mentor-and-tasks",
