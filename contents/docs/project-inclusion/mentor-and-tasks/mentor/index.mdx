@@ -1,0 +1,42 @@
+---
+title: 维护导师信息
+description: R2CN 采用一个yaml文件维护所有的导师信息
+---
+
+### 修改步骤
+
+<Stepper>
+  <StepperItem title="第一步：Fork仓库">
+    [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn.git)
+  </StepperItem>
+  <StepperItem title="第二步：修改文件内容">
+    首次加入的组织需要新增一段配置项目
+
+    ```yaml
+    - name: "仓库的组织/名称"
+      maintainers:
+      - id: "导师的GitHub-ID"
+        task: "填写数字，同时能够进行的任务数量" 
+        maxScore: "填写数字，任务允许的最大分值"
+    ```
+    非首次加入的组织，只需要维护对应name下面的导师信息即可
+  </StepperItem>
+  <StepperItem title="第三步：Open PR 等待审核">
+  </StepperItem>
+</Stepper>
+
+
+### yaml 文件格式
+
+```yaml
+repos:
+- name: "your-organization/your-repo-path" ## 仓库的组织/名称
+  maintainers:
+  - id: "mentor1" ## 导师的GitHub ID
+    task: 3 ## 同时能够进行的任务数量
+    maxScore: 20 ## 任务允许的最大分值
+  - id: "mentor2"
+    task: 1
+    maxScore: 10
+- name: "other-organization/other-repo"
+```

@@ -15,12 +15,20 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "项目注册", href: "/register" },
       { title: "项目审核", href: "/review" },
-      { title: "安装R2CN-Bot", href: "/bot-installation" },
+      {
+        title: "R2CN-Bot", href: "/bot",
+        noLink: true,
+        items: [
+          { title: "安装Bot", href: "/installation" },
+          { title: "命令", href: "/usage" },
+        ],
+      },
       {
         title: "添加导师/发布任务",
         href: "/mentor-and-tasks",
         noLink: true,
         items: [
+          { title: "维护导师信息", href: "/mentor" },
           { title: "发布任务的要求", href: "/requirement" },
           { title: "任务分级", href: "/task-level" },
           { title: "任务Issue模板", href: "/template" },
