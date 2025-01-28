@@ -39,15 +39,16 @@ Options:
 
 ### 任务要求
 
-测试任务需要学生自己设计，主要包括以下三种类型：
+测试任务需要学生自己设计，主要包括以下四种类型，完成其中任何一个任务即可：
 
 <Note type="success" title="测试任务类型">
-    1. 通过 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 和 Git 功能对比，找到缺失的功能特性并完成，完善 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra)；
-    2. 增加 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 代码的增加测试用例，提升 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 质量；
-    3. 目前社区中存在很多 Git 增强功能，分析这些脚本的功能，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能；
+    1. 通过 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 和 Git 对比，找到缺失的特性并完成，完善 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的功能；
+    2. 增加 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 测试用例，提升 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 质量；
+    3. 开源社区存在很多 Git 增强功能的程序，分析这些程序的功能，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能；
+    4. 可自行设计 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 特性， 为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能；
 </Note>
 
-#### libra 功能补全
+#### 1. libra 功能补全
 
 测试任务是对比 Git 的命令及参数，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 项目补全缺失的 Git 命令及参数。
 
@@ -88,7 +89,15 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
 
 可以选择为 `libra` 实现一个 `init` 的参数（如 --bare）作为测试任务。
 
-#### libra 测试用例补充
+<Note type="danger" title="提示">
+  目前 `--bare` 参数已被实现， 实现逻辑是按照 `libra` 内部结构实现， 同 Git 的结构不同。可以把两种 **bare** 做一个转换的功能，同样可以作为测试任务， 参与的同学可以自由发挥设计功能，都可以作为测试任务。 
+</Note>
+
+#### 2. libra 测试用例补充
+
+#### 3. 增加新的命令和功能
+
+#### 4. 自行设计新功能
 
 ### 任务要求
 
