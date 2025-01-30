@@ -173,6 +173,7 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
         3. 如果增加了命令的参数，需要同步修改 [aria](https://github.com/web3infra-foundation/mega/tree/main/aria) 模块对应的[命令描述](https://github.com/web3infra-foundation/mega/tree/main/aria/contents/docs/libra/command)，PR 合入后对应的修改会自动更新到 [Mega](https://gitmega.dev) 网站 [Libra 命令描述](https://gitmega.dev/docs/libra/command); 在 [aria](https://github.com/web3infra-foundation/mega/tree/main/aria) 是使用 [Aira Docs](https://github.com/nisabmohd/Aria-Docs) 模板进行修改的，不能在 **mdx** 中使用 HTML 字符，可以使用模板提供的 **Component** 丰富页面展示，请参考 [Components](https://ariadocs.vercel.app/docs/getting-started/components)；
         4. 提交代码时使用 `git commit -s -S` 两个参数，用于 **Signed-off-by** 签名和 **GPG** 签名，否则代码 Review 后无法合入；
         5. 可以参考 [Conventional Commits](https://www.conventionalcommits.org) 规范编写 Commit Message、PR 标题和 PR 描述；
+        6. PR 描述一定要加入测试任务 Issue 的编号，[Mega](https://github.com/web3infra-foundation/mega) 项目维护者才会知道此 PR 目标功能是什么，才能更有针对性的进行 Review ；
     </Note>
     2. [Mega](https://github.com/web3infra-foundation/mega) 项目维护者会优先使用 **GitHub Copilot** 进行 Review 代码，会生成 Review 意见，需要根据意见进行修改；
     <img src="/images/student/pre-task/pre-task-issue-copilot.png" />
@@ -187,7 +188,7 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
     </Note>
   </StepperItem>
   <StepperItem title="第五步：关闭 Issue">
-    当 [Mega](https://github.com/web3infra-foundation/mega) 项目维护者认为 PR 已经完成测试任务，会将 Issue 的 **Projects** **r2cn** 的 **Status** 设为 **Done** 。此时同学可以使用此 Issue 的链接，作为注册 r2cn 提交的测试任务链接。
+    当 [Mega](https://github.com/web3infra-foundation/mega) 项目维护者认为 PR 已经完成测试任务，会将 Issue 的 **Projects** **r2cn** 的 **Status** 设为 **Done** 。此时同学才可以使用此 Issue 的链接，作为注册 r2cn 过程中需要提交的测试任务链接。
     <img src="/images/student/pre-task/pre-task-issue-done.png" />
   </StepperItem>
 </Stepper>

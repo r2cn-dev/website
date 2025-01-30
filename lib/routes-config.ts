@@ -10,13 +10,14 @@ export type EachRoute = {
 export const ROUTES: EachRoute[] = [
   {
     title: "开源项目加入流程",
-    href: "/project-inclusion",
+    href: "/project",
     noLink: true,
     items: [
-      { title: "项目注册", href: "/register" },
+      { title: "项目注册", href: "/signup" },
       { title: "项目审核", href: "/review" },
       {
-        title: "R2CN-Bot", href: "/bot",
+        title: "R2CN-Bot",
+        href: "/bot",
         noLink: true,
         items: [
           { title: "安装Bot", href: "/installation" },
@@ -52,7 +53,7 @@ export const ROUTES: EachRoute[] = [
       },
       {
         title: "学生注册与审核",
-        href: "/register",
+        href: "/signup",
       },
       {
         title: "任务领取与确认",
