@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Space_Mono, Space_Grotesk } from "next/font/google";
 import { Footer } from "@/components/footer";
 import "@/styles/globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
           <Footer />
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-1T54J6L2NX" />
     </html>
   );
 }

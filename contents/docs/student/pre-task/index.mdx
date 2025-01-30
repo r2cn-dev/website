@@ -89,29 +89,111 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
 
 可以选择为 `libra` 实现一个 `init` 的参数（如 --bare）作为测试任务。
 
-<Note type="danger" title="提示">
-  目前 `--bare` 参数已被实现， 实现逻辑是按照 `libra` 内部结构实现， 同 Git 的结构不同。可以把两种 **bare** 做一个转换的功能，同样可以作为测试任务， 参与的同学可以自由发挥设计功能，都可以作为测试任务。 
+<Note type="danger" title="注意">
+  目前 `--bare` 参数已被实现， 实现逻辑是按照 `libra` 内部结构实现 bare 模式， 同 Git 的结构不同。可以把两种 **bare** 做一个转换的功能，同样可以作为测试任务，参与的同学可以自由发挥设计功能，都可以作为测试任务。
 </Note>
 
 #### 2. libra 测试用例补充
 
+[libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的测试用例目前欠缺很多，可以为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 添加或改进测试用例作为测试任务。
+
+<Note type="success" title="提示">
+    1. 如果使用测试用例作为 r2cn 的测试任务，需要至少添加或修改 **3** 个以上的测试用例；
+    2. 需要在测试任务的 Issue 中分析当前测试用例的问题，如测试覆盖的条件不完整、测试用例的覆盖率不够等，不能添加无效的测试用例；
+</Note>
+
 #### 3. 增加新的命令和功能
 
+当前社区的开源项目中有很多 Git 增强功能的程序，如 [Conventional Commits](https://www.conventionalcommits.org) 是一个 Commit Message 编写的规范，可以为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 Commit 命令添加一个 `conventional` 参数，使用 AI 生成符合规范的 Commit Message 。
+
+<Note type="success" title="提示">
+    1. 在 GitHub 上搜索 Git 相关的开源仓库，找到这样的项目，分析其功能，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 添加新的命令和功能；
+    2. 需要在测试任务的 Issue 的描述中介绍参照项目，便于分析计划的功能是否合理，粒度是否适合作为测试任务；
+</Note>
+
 #### 4. 自行设计新功能
+
+当然也可以根据使用 Git 的经验，自行设计新的功能。请充分发挥自己的想象力，[Mega](https://github.com/web3infra-foundation/mega) 项目不会拒绝任何有创意的功能。
 
 ### 任务要求
 
 <Stepper>
   <StepperItem title="第一步：创建测试任务 Issue">
+      1. 使用 `pre-task` 的标签过滤 `open` 和 `closed` 的 Issue，查看是否有已经有实现和计划实现的测试任务和自己的想法相同: `is:issue state:closed label:pre-task` 和 `is:issue state:open label:pre-task`；
+      <img src="/images/student/pre-task/pre-task-issue-filter.png" />
+      也可以在 [Mega](https://github.com/web3infra-foundation/mega) 的 [r2cn](https://github.com/orgs/web3infra-foundation/projects/2) 项目中查看已经完成的任务和正在进行的任务；
+      <img src="/images/student/pre-task/pre-task-issue-project.png" />
+      2. 在 [Mega](https://github.com/web3infra-foundation/mega) 项目中使用 **pre-task** 测试任务模板创建一个 Issue；
+      <img src="/images/student/pre-task/pre-task-issue-template.png" />
+      3. 在 Issue 的标题中简要描述测试任务要实现的功能，在 **Description** 中对测试任务进行具体描述、包括实现方案；
+      <img src="/images/student/pre-task/pre-task-issue-crate.png" />
+
+      #### 以下是一个测试任务的参考描述：
+
+      ```Markdown
+      [libra] 为 init 命令添加 --bare 参数，代码仓库初始化时使用 bare 模式
+
+      [任务描述]
+      为 init 命令添加 --bare 参数。Git 的 bare 模式（裸仓库）是指不包含工作区
+      （working directory）的 Git 仓库。 它只包含 Git 内部的版本控制数据
+      （即 .git 目录的内容），但不会有实际的文件可供修改。
+
+      bare 模式的特点：
+      1. 没有工作区：无法直接修改或提交文件。
+      2. 只存储 Git 版本库数据：主要用于远程仓库，不用于开发。
+      3. 不能直接 checkout 代码，但可以用于 push 和 fetch。、
+
+      libra 的 .libra 目录和 .git 目录的结构不同，本任务参照 Git 的
+      bare 模式实现 libra 的 bare 模式, 不包含 `.libra` 和 `.git` 转换。
+
+      [实现方案]
+      1. 参考 libra 其他子命令的方式，给 init 命令添加 InitArgs 结构体用于表示
+      init 命令的参数（在结构体中添加 bool 类型变量 bare 来表示 --bare 参数），
+      通过 Parser 库解析命令行参数。
+      2. 根据 bare 值来确定 init 命令是初始化普通仓库还是 bare 仓库，两种仓库的
+      初始化路径不同。
+      3. 改变 init 函数中判断仓库已存在的代码逻辑 - 这里参考了 Git 中 setup.c
+      中的 is_reinit 函数, 通过判断 description 等文件是否存在来确定 libra
+      仓库是否已经初始化。
+      4. 为修改后的代码编写测试样例，通过判断目录下是否存在 description、
+      libra.db 和 info/exclude 目录来判断是否初始化成功。
+      ```
   </StepperItem>
   <StepperItem title="第二步：同 Maintainer 讨论实现方案">
+    1. 在 Issue 的 Comment 中和 [Mega](https://github.com/web3infra-foundation/mega) 项目的维护者讨论实现的功能等技术问题；
+    2. [Mega](https://github.com/web3infra-foundation/mega) 项目维护者将 Issue 的 **Assignees** 设为提交的同学，标识同意该同学的测试任务方案，可以针对此方案进行开发；
+    3. [Mega](https://github.com/web3infra-foundation/mega) 项目维护者将 Issue 的 **Type** 设为 **Task**，**Projects** **r2cn** 的 **Status** 设为 **In progress**；
+    <img src="/images/student/pre-task/pre-task-issue-status.png" />
   </StepperItem>
   <StepperItem title="第三步：实现功能，提交 Pull Request">
+    1. 向 [Mega](https://github.com/web3infra-foundation/mega) 提交 PR：标题简要描写 PR 代码的功能，描述第一行写上 Issue 编号， 如 **此 PR 完成了 r2cn 测试任务 #810 ，初始化时自定义分支名称** ，并且尽量在 PR 中描述功能和实现方案，便于 [Mega](https://github.com/web3infra-foundation/mega) 项目维护者 Review 代码；
+    <Note type="danger" title="注意事项">
+        1. 代码中的注释使用英文，PR 和 Issue 中可以使用中文；
+        2. 代码的测试用例尽量覆盖更多场景；
+        3. 如果增加了命令的参数，需要同步修改 [aria](https://github.com/web3infra-foundation/mega/tree/main/aria) 模块对应的[命令描述](https://github.com/web3infra-foundation/mega/tree/main/aria/contents/docs/libra/command)，PR 合入后对应的修改会自动更新到 [Mega](https://gitmega.dev) 网站 [Libra 命令描述](https://gitmega.dev/docs/libra/command); 在 [aria](https://github.com/web3infra-foundation/mega/tree/main/aria) 是使用 [Aira Docs](https://github.com/nisabmohd/Aria-Docs) 模板进行修改的，不能在 **mdx** 中使用 HTML 字符，可以使用模板提供的 **Component** 丰富页面展示，请参考 [Components](https://ariadocs.vercel.app/docs/getting-started/components)；
+        4. 提交代码时使用 `git commit -s -S` 两个参数，用于 **Signed-off-by** 签名和 **GPG** 签名，否则代码 Review 后无法合入；
+        5. 可以参考 [Conventional Commits](https://www.conventionalcommits.org) 规范编写 Commit Message、PR 标题和 PR 描述；
+    </Note>
+    2. [Mega](https://github.com/web3infra-foundation/mega) 项目维护者会优先使用 **GitHub Copilot** 进行 Review 代码，会生成 Review 意见，需要根据意见进行修改；
+    <img src="/images/student/pre-task/pre-task-issue-copilot.png" />
+    3. [Mega](https://github.com/web3infra-foundation/mega) 项目维护者同时会人工 Review 代码，会生成 Review 意见，需要根据意见进行修改；
+    <img src="/images/student/pre-task/pre-task-issue-review.png" />
   </StepperItem>
-  <StepperItem title="第四步：Maintainer Review 后合入 Pull Request">
+  <StepperItem title="第四步：Mega 项目维护者合入 Pull Request">
+    经过代码 Review 后，[Mega](https://github.com/web3infra-foundation/mega) 项目维护者会合入 Pull Request 。
+    <img src="/images/student/pre-task/pre-task-issue-pr-closed.png" />
+    <Note type="success" title="注意事项">
+    对于测试任务，可以编写多个 PR ，每个 PR 完成一部分功能，这样可以更好的进行代码 Review 。
+    </Note>
   </StepperItem>
   <StepperItem title="第五步：关闭 Issue">
+    当 [Mega](https://github.com/web3infra-foundation/mega) 项目维护者认为 PR 已经完成测试任务，会将 Issue 的 **Projects** **r2cn** 的 **Status** 设为 **Done** 。此时同学可以使用此 Issue 的链接，作为注册 r2cn 提交的测试任务链接。
+    <img src="/images/student/pre-task/pre-task-issue-done.png" />
   </StepperItem>
 </Stepper>
 
 ### 参考资料
+
+1. [Rust 与 Git 版本管理](https://docs.google.com/presentation/d/14UnbhjF2oPzh4_6m3J-Tz3F7Fne2lCjSA7haYHbVPCA/edit?usp=sharing)，介绍 Git 底层原理的 Slide ，可以帮助更好的理解 Git 底层实现；
+2. [Pro Git](https://git-scm.com/book/zh/v2)，官方最权威的 Git 书籍，可以帮助更好的理解 Git 功能和使用；
+3. [Git - From Intern(al) To Expert](https://www.git-book.pro/) - 正在编写中
