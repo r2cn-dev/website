@@ -7,26 +7,44 @@ description: R2CN 采用一个yaml文件维护所有的导师信息
 
 <Stepper>
   <StepperItem title="第一步：Fork仓库">
-    [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn.git)
+    请 Fork [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn) 到开源项目的 GitHub 组织下；
   </StepperItem>
-  <StepperItem title="第二步：修改文件内容">
-    首次加入的组织需要新增一段配置项目
-
+  <StepperItem title="第二步：修改 r2cn.yaml, 添加仓库地址和导师信息">
     ```yaml
     - name: "仓库的组织/名称"
       maintainers:
-      - id: "导师的GitHub-ID"
-        task: "填写数字，同时能够进行的任务数量" 
-        maxScore: "填写数字，任务允许的最大分值"
+      - id: "导师 GitHub ID"
+        task: 2
+        maxScore: 10
     ```
-    非首次加入的组织，只需要维护对应name下面的导师信息即可
+
+    提交信息示例：
+
+    ```yaml
+    repos:
+    - name: "web3infra-foundation/mega"
+      maintainers:
+      - id: "benjamin-747"
+        task: 3
+        maxScore: 20
+      - id: "genedna"
+        task: 3
+        maxScore: 20
+    ```
+
+    <Note type="danger" title="注意事项">
+      1. 如果一个开源项目有多个代码仓库，请在 r2cn.yaml 中添加多个仓库；
+      2. 一个仓库可以有多个导师，`maintainers` 要使用导师的 GitHub ID，不是邮箱地址；
+      3. Maintainer 必须拥有仓库的写权限，有权限批准 PR 的合入；
+      4. 开源项目初期同时发布任务数量限制为 **2** ，参加过开源之夏的开源项目同时发布任务数量初始为 **3** ；R2CN 技术委员会会定期评审任务完成和辅导质量，根据情况会逐步放宽同时发布任务的数量限制；
+    </Note>
   </StepperItem>
-  <StepperItem title="第三步：Open PR 等待审核">
+  <StepperItem title="提交 PR 到 r2cn-dev/r2cn ">
+    修改完成后提交 PR 到 [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn) 仓库，等待技术委员会审核通过后合入 PR。
   </StepperItem>
 </Stepper>
 
-
-### yaml 文件格式
+### YAML 格式说明
 
 ```yaml
 repos:

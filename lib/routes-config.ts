@@ -14,7 +14,7 @@ export const ROUTES: EachRoute[] = [
     noLink: true,
     items: [
       {
-        title: "1.注册前完成测试任务",
+        title: "1. 注册前完成测试任务",
         href: "/pre-task",
       },
       {
@@ -51,9 +51,8 @@ export const ROUTES: EachRoute[] = [
       { title: "1. 开源项目注册", href: "/signup" },
       { title: "2. 开源项目审核", href: "/review" },
       {
-        title: "3. 开源项目安装 R2CN-Bot",
+        title: "3. R2CN-Bot",
         href: "/bot",
-        noLink: true,
         items: [
           { title: "安装 Bot", href: "/installation" },
           { title: "命令", href: "/usage" },
@@ -72,9 +71,17 @@ export const ROUTES: EachRoute[] = [
         ],
       },
       {
-        title: "6. 任务完成情况定期评审",
+        title: "5. 任务完成情况定期评审",
         href: "/task-periodic-review",
       },
+    ],
+  },
+  {
+    title: "R2CN 计划",
+    href: "/r2cn",
+    items: [
+      { title: "1. 关于 R2CN 开源实习计划", href: "/about" },
+      { title: "2. R2CN 技术委员会", href: "/tc" },
     ],
   },
 ];
