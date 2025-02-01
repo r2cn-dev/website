@@ -9,71 +9,71 @@ export type EachRoute = {
 
 export const ROUTES: EachRoute[] = [
   {
-    title: "开源项目加入流程",
-    href: "/project",
-    noLink: true,
-    items: [
-      { title: "项目注册", href: "/signup" },
-      { title: "项目审核", href: "/review" },
-      {
-        title: "R2CN-Bot",
-        href: "/bot",
-        noLink: true,
-        items: [
-          { title: "安装Bot", href: "/installation" },
-          { title: "命令", href: "/usage" },
-        ],
-      },
-      {
-        title: "添加导师/发布任务",
-        href: "/mentor-and-tasks",
-        noLink: true,
-        items: [
-          { title: "维护导师信息", href: "/mentor" },
-          { title: "发布任务的要求", href: "/requirement" },
-          { title: "任务分级", href: "/task-level" },
-          { title: "任务Issue模板", href: "/template" },
-          { title: "任务Issue/PR标签管理与分值统计", href: "/labels" },
-        ],
-      },
-      {
-        title: "任务完成情况定期评审",
-        href: "/task-periodic-review",
-      },
-    ],
-  },
-  {
-    title: "学生实习流程",
+    title: "学生参与 R2CN 实习计划",
     href: "/student",
     noLink: true,
     items: [
       {
-        title: "测试任务",
+        title: "1.注册前完成测试任务",
         href: "/pre-task",
       },
       {
-        title: "学生注册与审核",
+        title: "2. 学生注册与审核",
         href: "/signup",
       },
       {
-        title: "任务领取与确认",
+        title: "3. 任务领取与确认",
         href: "/assign",
       },
       {
-        title: "导师辅导学生",
+        title: "4. 导师辅导学生",
         href: "/guidance",
       },
       {
-        title: "提交成果",
+        title: "5. 提交成果",
         href: "/commit",
       },
       {
-        title: "积分统计与奖金发放",
+        title: "6. 积分统计与奖金发放",
         href: "/statistic",
       },
       {
-        title: "实习证明申请",
+        title: "7. 实习证明申请",
         href: "/certificate",
+      },
+    ],
+  },
+  {
+    title: "开源项目参与 R2CN 计划",
+    href: "/project",
+    noLink: true,
+    items: [
+      { title: "1. 开源项目注册", href: "/signup" },
+      { title: "2. 开源项目审核", href: "/review" },
+      {
+        title: "3. 开源项目安装 R2CN-Bot",
+        href: "/bot",
+        noLink: true,
+        items: [
+          { title: "安装 Bot", href: "/installation" },
+          { title: "命令", href: "/usage" },
+        ],
+      },
+      {
+        title: "4. 添加导师/发布任务",
+        href: "/mentor-and-tasks",
+        noLink: true,
+        items: [
+          { title: "1. 维护导师信息", href: "/mentor" },
+          { title: "2. 发布任务的要求", href: "/requirement" },
+          { title: "3. 任务分级", href: "/task-level" },
+          { title: "4. 任务Issue模板", href: "/template" },
+          { title: "5. 任务Issue/PR标签管理与分值统计", href: "/labels" },
+        ],
+      },
+      {
+        title: "6. 任务完成情况定期评审",
+        href: "/task-periodic-review",
       },
     ],
   },

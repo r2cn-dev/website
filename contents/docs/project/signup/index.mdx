@@ -6,15 +6,68 @@ description: 如果开源项目想加入到 R2CN 开源实习计划，请按照�
 ## 什么样的项目可以加入 R2CN 开源实习计划？
 
 1. 项目必须是开源，且代码仓库托管在 GitHub 上；
-2. 项目必须是使用 Rust 编程语言开发；
+2. 项目必须是主要使用 Rust 编程语言开发；
 3. 项目必须是云原生技术相关领域；
 
-以下是 R2CN 开源实习计划的开源项目技术栈示意图，可以根据此示意图来判断自己的项目是否符合 R2CN 的要求。
+以下是 R2CN 开源实习计划的开源项目技术栈示意图，可以根据此示意图来判断是否符合 R2CN 要求。
 
 <img src="/images/project/signup/r2cn-stack.png" />
 
-如果开源项目对自己是否符合 R2CN 的技术栈范围有疑问，可以和 [@genedna](https://github.com/genedna) 联系，讨论请发送邮件到 `eli@patch.sh` 或在 [论坛](https://github.com/orgs/r2cn-dev/discussions) 发起讨论咨询。
+如果开源项目对自己是否符合 R2CN 的技术栈范围有疑问，可以和 [@genedna](https://github.com/genedna) 联系，发送邮件到 `eli@patch.sh` 或在 [论坛](https://github.com/orgs/r2cn-dev/discussions) 发起讨论咨询。
 
-## 开源项目自行在官网进行注册：
-（1）填写项目联系人、技术领域、项目仓库地址等信息；<br/>
-（2）同时签署相关协议。
+### 加入 R2CN 开源实习计划有什么条件？
+
+R2CN 计划的一个主要是目标是培养熟悉 Rust 编程语言和 RISC-V 架构的开源贡献者，要求参与的开源项目 Maintainer 必须保证有一定时间投入来培养学生，而不是简单的将任务分配给实习学生。
+
+<Note type="danger" title="开源项目辅导要求">
+    1. R2CN 计划要求开源项目 Maintainer 每周要至少一小时会议的时间和学生进行沟通，帮助学生理解任务，解决开发过程中遇到的问题；
+    2. R2CN 计划提供在线的会议系统用于开源项目 Maintainer 对学生进行远程指导沟通； R2CN 计划会不定期对会议记录抽查评估辅导情况，有权要求 Maintainer 改进培养质量；
+    3. 对于不履行培养义务的开源项目 Maintainer ，R2CN 计划有权要求项目方更换 Maintainer ；对于辅导质量通过改进始终不理想的开源项目，R2CN 计划有权终止项目的参与资格；
+    4. 对于拒绝履行辅导义务的项目，R2CN 计划有权终止项目的参与资格；
+</Note>
+
+R2CN 计划的另一个主要目标是推动开源项目对 RISC-V 架构进行适配。
+
+<Note type="danger" title="开源项目 RISC-V 适配">
+    1. 开源项目必须使用 R2CN 计划提供的 CI 环境测试 RISC-V 兼容性，保证项目在 RISC-V 架构下可以构建和运行；
+    2. 对于不进行兼容性测试的开源项目，R2CN 计划有权终止开源项目的参与资格；
+</Note>
+
+R2CN 计划要求开源项目必须安装 [R2CN-Bot](/docs/project/bot/installation) ，用于对开源项目发布任务、学生认领项目和积分计算进行管理。
+
+<Note type="danger" title="R2CN-Bot 安装">
+    1. R2CN 对实习任务的管理使用 [R2CN-Bot](/docs/project/bot/installation)，开源项目必须在起 GitHub 仓库安装 [R2CN-Bot](/docs/project/bot/installation) 应用；
+    2. 开源项目 Maintainer 和学生认领等流程使用 [R2CN-Bot 命令](/docs/project/bot/usage) 进行交互；
+</Note>
+
+### 开源项目加入 R2CN 流程
+
+<Stepper>
+  <StepperItem title="使用模板，创建开源项目申请加入 Issue">
+      <img src="/images/project/signup/issue-template.png" />
+  </StepperItem>
+  <StepperItem title="填写项目信息">
+      <img src="/images/project/signup/project-detail.png" />
+      填写内容示例：
+
+      ```markdown
+      [Apply to Join R2CN] Mega 项目申请加入 R2CN 计划
+
+      [项目名称] Mega
+
+      [项目代码仓库] https://github.com/web3infra-foundation/mega
+
+      [项目网站] https://gitmega.dev
+
+      [项目简介] Mega 是 Google Piper 的一个非官方开源实现。它是一个支持 Git 的
+      Monorepo 管理系统。 Mega 旨在管理大型代码库，简化开发并促进协作。 Mega 支
+      持容器化部署，可以在 Kubernetes 上运行。 Mega 集成大型构建系统 Buck2 ，构
+      建基于云原生的 CI/CD 工作流。
+
+      [联系人及邮件] @genedna <eli@patch.sh>
+      ```
+  </StepperItem>
+  <StepperItem title="项目审核">
+      R2CN 计划会对项目信息进行审核，审核后会通知项目方进行项目陈述，由 R2CN 技术委员会进行评审。
+  </StepperItem>
+</Stepper>
