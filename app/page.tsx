@@ -39,7 +39,7 @@ export default function Home() {
           2. 注册实习计划
         </Link>
         <Link
-          href="/docs/student/signup"
+          href="/docs/r2cn"
           className={buttonVariants({
             variant: "secondary",
             className: "px-6",

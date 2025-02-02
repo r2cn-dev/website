@@ -1,7 +1,9 @@
 ---
 title: 任务Issue模板
-description: 可以使用GitHub Issue Template 功能添加模版文件到仓库，方便快速创建R2CN 任务
+description: 可以使用GitHub Issue Template 功能添加模版文件到仓库，方便快速创建R2CN 任务，开源项目维护者可以根据实际情况调整模板。
 ---
+
+建议开源项目维护者使用GitHub Issue Template 功能添加模版文件到仓库，项目的多名导师可以使用项目的模板来维护任务的一致性，方便学生快速搜索和查找任务。
 
 ### 创建模版
 
@@ -69,3 +71,31 @@ description: 可以使用GitHub Issue Template 功能添加模版文件到仓库
 ```
     </TabsContent>
 </Tabs>
+
+### 任务示例
+
+```Markdown
+[标题] 升级 Mega 项目的依赖 RustyVault 到 0.2.1
+[任务分值] 4分
+[背景描述]
+Mega 项目使用 RustyVault 来进行密钥的生成和存储。目前 Mega 使用了 RustyVault
+的 0.1.0 版本。 RustyVault 近期版本升级到 0.2.1 ，但有些函数变动导致 Mega 无
+法通过编译。
+
+Mega 调用 RustyVault 的项目在代码仓库的 vault 目录下。
+[需求描述]
+1. 升级 RustyVault 到 0.2.1 ，修改代码兼容 RustyVault 新版本的设计；
+2. 修复编译错误 Mega 正常编译通过，使用 Clippy 检查没有任务 Warning 信息；
+[产出标准]
+1. 代码注释使用英文，提交 PR 信息时可以使用中文；
+2. 针对代码的修改，补充测试用例；
+[PR 提交地址] 本代码仓库 main 分支
+[期望完成时间] 2025 年 2 月 21 日
+[开发指导]
+1. RustyVault - https://github.com/Tongsuo-Project/RustyVault
+[导师及邮箱]
+1. benjamin-747 benjamin.747@outlook.com
+[备注]
+1. 如果选择此任务请邮件和导师联系，同导师预约线上会议进行讨论；
+2. 任务完成后请在 PR 中 @ 导师，导师会及时 Review PR ；
+```
