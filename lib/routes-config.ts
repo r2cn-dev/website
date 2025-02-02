@@ -46,7 +46,6 @@ export const ROUTES: EachRoute[] = [
   {
     title: "开源项目参与 R2CN 计划",
     href: "/project",
-    noLink: true,
     items: [
       { title: "1. 开源项目注册", href: "/signup" },
       { title: "2. 开源项目审核", href: "/review" },
@@ -80,7 +79,8 @@ export const ROUTES: EachRoute[] = [
     href: "/r2cn",
     items: [
       { title: "1. 关于 R2CN 开源实习计划", href: "/about" },
-      { title: "2. R2CN 技术委员会", href: "/tc" },
+      { title: "2. 关于 R2CN 技术委员会", href: "/tc" },
+      { title: "3. 参与 R2CN 的开源项目", href: "/projects" },
     ],
   },
 ];
