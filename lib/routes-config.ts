@@ -9,6 +9,15 @@ export type EachRoute = {
 
 export const ROUTES: EachRoute[] = [
   {
+    title: "R2CN 计划",
+    href: "/r2cn",
+    items: [
+      { title: "1. 关于 R2CN 开源实习计划", href: "/about" },
+      { title: "2. 关于 R2CN 技术委员会", href: "/tc" },
+      { title: "3. 参与 R2CN 的开源项目", href: "/projects" },
+    ],
+  },
+  {
     title: "学生参与 R2CN 实习计划",
     href: "/student",
     noLink: true,
@@ -30,7 +39,7 @@ export const ROUTES: EachRoute[] = [
         href: "/guidance",
       },
       {
-        title: "5. 提交成果",
+        title: "5. 提交任务代码",
         href: "/commit",
       },
       {
@@ -53,8 +62,8 @@ export const ROUTES: EachRoute[] = [
         title: "3. R2CN-Bot",
         href: "/bot",
         items: [
-          { title: "安装 Bot", href: "/installation" },
-          { title: "命令", href: "/usage" },
+          { title: "Bot 安装说明", href: "/installation" },
+          { title: "命令手册", href: "/usage" },
         ],
       },
       {
@@ -72,15 +81,6 @@ export const ROUTES: EachRoute[] = [
         title: "5. 任务评审",
         href: "/task-periodic-review",
       },
-    ],
-  },
-  {
-    title: "R2CN 计划",
-    href: "/r2cn",
-    items: [
-      { title: "1. 关于 R2CN 开源实习计划", href: "/about" },
-      { title: "2. 关于 R2CN 技术委员会", href: "/tc" },
-      { title: "3. 参与 R2CN 的开源项目", href: "/projects" },
     ],
   },
 ];

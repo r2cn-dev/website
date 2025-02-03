@@ -15,9 +15,7 @@ type PageProps = {
 export async function generateMetadata(props: PageProps) {
   const params = await props.params;
 
-  const {
-    slug
-  } = params;
+  const { slug } = params;
 
   const res = await getBlogForSlug(slug);
   if (!res) return null;
@@ -37,9 +35,7 @@ export async function generateStaticParams() {
 export default async function BlogPage(props: PageProps) {
   const params = await props.params;
 
-  const {
-    slug
-  } = params;
+  const { slug } = params;
 
   const res = await getBlogForSlug(slug);
   if (!res) notFound();
@@ -52,7 +48,7 @@ export default async function BlogPage(props: PageProps) {
         })}
         href="/blog"
       >
-        <ArrowLeftIcon className="w-4 h-4 mr-1.5" /> Back to blog
+        <ArrowLeftIcon className="w-4 h-4 mr-1.5" /> 返回博客列表
       </Link>
       <div className="flex flex-col gap-3 pb-7 w-full mb-2">
         <p className="text-muted-foreground text-sm">
@@ -62,7 +58,7 @@ export default async function BlogPage(props: PageProps) {
           {res.frontmatter.title}
         </h1>
         <div className="mt-6 flex flex-col gap-3">
-          <p className="text-sm text-muted-foreground">Posted by</p>
+          <p className="text-sm text-muted-foreground">作者</p>
           <Authors authors={res.frontmatter.authors} />
         </div>
       </div>

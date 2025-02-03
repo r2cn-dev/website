@@ -22,6 +22,13 @@ export function Footer() {
             >
               GitHub
             </Link>
+            ，讨论请在
+            <Link
+              className="px-1 underline underline-offset-2"
+              href="https://discord.gg/WRp4TKv6rh"
+            >
+              Discord 频道
+            </Link>
           </p>
         </div>
       </div>
