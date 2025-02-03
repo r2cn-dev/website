@@ -1,16 +1,35 @@
 ---
 title: 任务领取与确认
-description: This guide provides instructions on customizing our application.
+description: 学生在完成注册流程和签订合同后，可以在参与 R2CN 计划的开源项目中搜索感兴趣的任务，导师沟通并领取任务。
 ---
 
-## 任务领取
-1. 学生在官网查看任务，找到感兴趣的任务，点击任务链接跳转至项目仓库相应issue。
-2. 学生将代码托管平台中将issue分配给自己，在评论区回复`/request-assign`，并发送邮件给相关导师请求审核，邮件需附简历和任务的解决思路。
-3. 每位学生每次只能领取1个任务。
+### 参与的开源项目
 
-## 任务确认
-1. 导师与学生进行沟通，在issue评论 `/intern-approve`接受申请，或者`/intern-disapprove` 拒绝申请，反馈领取结果。
-2. 学生收到确认后即可开始处理任务。
-3. 如未通过确认，学生可重新领取其他任务。
+1. [Rk8s](https://github.com/r2cn-dev/rk8s) - Rust 重构 Kubernetes 项目
+2. [Mega](https://github.com/web3infra-foundation/mega) - 开源版 Google Piper
+3. [RustyVault](https://github.com/Tongsuo-Project/RustyVault) - Rust 实现的密钥管理系统
 
-[Bot 命令参考](/docs/project-inclusion/bot/usage)
+### 任务领取流程
+
+<Stepper>
+  <StepperItem title="第一步：浏览开源项目代码仓库 Issue ，浏览标有 r2cn-xx 标签的 Issue ，找到感兴趣的任务">
+  </StepperItem>
+  <StepperItem title="第二步：根据 Issue 联系方式，和开源项目 Maintainer 沟通相关任务的具体要求和实现方案">
+      <Note type="success" title="提示">
+        或者在 [R2CN Discord](https://discord.gg/WRp4TKv6rh) 项目对应的频道发起讨论，获取更多信息。
+      </Note>
+  </StepperItem>
+  <StepperItem title="第三步：实习学生和导师确认认领任务，在 Issue 中回复 /request-assign 发起任务申请">
+      <Note type="success" title="提示">
+          1. 每位学生每次只能领取 1 个任务；如果有 1 个任务正在进行中，无法申请其他的任务；
+          2. 如果有一个学生已经申请了任务，其他学生申请会提示错误；
+      </Note>
+  </StepperItem>
+  <StepperItem title="第四步：导师在 Issue 回复 /intern-approve 接受申请，或者 /intern-disapprove 拒绝申请">
+      <Note type="success" title="提示">
+          1. 申请任务的同学提前和老师充分沟通，能为申请成功提升几率；
+      </Note>
+  </StepperItem>
+  <StepperItem title="第五步：学生申请成功后开始完成任务的开发，如果申请失败可以申请其他任务">
+  </StepperItem>
+</Stepper>
