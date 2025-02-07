@@ -1,6 +1,6 @@
 ---
 title: 测试任务
-description: 参与到 R2CN 实习之前，学生需要完成一个测试任务，以便证明已经具备了基本 Rust 编程语言能力和熟练掌握 Git 命令。
+description: 参与 R2CN 开源实习计划之前，学生需要完成一个测试任务，以便证明已经具备了基本 Rust 编程语言能力和熟练掌握 Git 命令。
 ---
 
 ### 任务项目
@@ -113,14 +113,11 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
 
 #### 4. 自行设计新功能或修复 Bug
 
-1. 当然也可以根据使用 Git 的经验，自行设计新的功能。请充分发挥自己的想象力，[Mega](https://github.com/web3infra-foundation/mega) 项目不会拒绝任何有创意的功能；
-2. 或者测试出一个 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 __Bug__ ，修复 __Bug__ 也可以作为测试任务。
+当然也可以根据使用 Git 的经验，自行设计新的功能。请充分发挥自己的想象力，[Mega](https://github.com/web3infra-foundation/mega) 项目不会拒绝任何有创意的功能；或者测试出一个 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 __Bug__ ，修复 __Bug__ 也可以作为测试任务。
 
 #### 5. 联系方式
 
-1. 如果对自行设计新功能，或对测试任务有疑问，可以和 [@genedna](https://github.com/genedna) 联系，讨论请发送邮件到 `eli@patch.sh` ；
-2. 或在 [论坛](https://github.com/orgs/r2cn-dev/discussions) 发起讨论 ；
-3. 或在 [R2CN Discord](https://discord.gg/WRp4TKv6rh) 的 `#pretask` 频道发起讨论；
+如果对自行设计新功能，或对测试任务有疑问，可以和 [@genedna](https://github.com/genedna) 联系，如需讨论请发送邮件到 `eli@patch.sh` ，也可在 [论坛](https://github.com/orgs/r2cn-dev/discussions) 或 [R2CN Discord](https://discord.gg/WRp4TKv6rh) 的 `#pretask` 频道发起讨论。
 
 ### 任务要求
 
@@ -128,11 +125,11 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
   <StepperItem title="第一步：创建测试任务 Issue">
       1. 使用 `pre-task` 的标签过滤 `open` 和 `closed` 的 Issue，查看是否有已经有实现和计划实现的测试任务和自己的想法相同: `is:issue state:closed label:pre-task` 和 `is:issue state:open label:pre-task`；
       <img src="/images/student/pre-task/pre-task-issue-filter.png" />
-      也可以在 [Mega](https://github.com/web3infra-foundation/mega) 的 [r2cn](https://github.com/orgs/web3infra-foundation/projects/2) 项目中查看已经完成的任务和正在进行的任务；
+      也可以在 [Mega](https://github.com/web3infra-foundation/mega) 的 [r2cn](https://github.com/orgs/web3infra-foundation/projects/2) 项目中查看已经完成的和正在进行的任务；
       <img src="/images/student/pre-task/pre-task-issue-project.png" />
       2. 在 [Mega](https://github.com/web3infra-foundation/mega) 项目中使用 **pre-task** 测试任务模板创建一个 Issue；
       <img src="/images/student/pre-task/pre-task-issue-template.png" />
-      3. 在 Issue 的标题中简要描述测试任务要实现的功能，在 **Description** 中对测试任务进行具体描述、包括实现方案；
+      3. 在 Issue 的标题中简要描述测试任务要实现的功能，在 **Description** 中对测试任务进行具体描述、包括实现方案。
       <img src="/images/student/pre-task/pre-task-issue-crate.png" />
 
       #### 以下是一个测试任务的参考描述：
@@ -148,7 +145,7 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
       bare 模式的特点：
       1. 没有工作区：无法直接修改或提交文件。
       2. 只存储 Git 版本库数据：主要用于远程仓库，不用于开发。
-      3. 不能直接 checkout 代码，但可以用于 push 和 fetch。、
+      3. 不能直接 checkout 代码，但可以用于 push 和 fetch。
 
       libra 的 .libra 目录和 .git 目录的结构不同，本任务参照 Git 的
       bare 模式实现 libra 的 bare 模式, 不包含 `.libra` 和 `.git` 转换。
