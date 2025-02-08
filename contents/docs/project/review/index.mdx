@@ -27,19 +27,19 @@ description: 开源项目必须在技术委员会会议上进行项目陈述，�
 
 开源项目通过技术委员会的投票通过后，开源项目仓库需要安装 [R2CN-Bot](/docs/project/bot)，请参考文档中 [安装 Bot](/docs/project/bot/installation) 部分进行安装。
 
-### 添加仓库和导师
+### 添加仓库和维护者
 
-通过评审的开源项目，向 R2CN 仓库提交代码仓库和导师，添加成功后导师可以开始发布任务。
+通过评审的开源项目，向 R2CN 仓库提交代码仓库和维护者，添加成功后维护者可以开始发布任务。
 
 <Stepper>
   <StepperItem title="第一步：Fork 仓库">
     请 Fork [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn) 到开源项目的 GitHub 组织下；
   </StepperItem>
-  <StepperItem title="第二步：修改 r2cn.yaml, 添加仓库地址和导师信息">
+  <StepperItem title="第二步：修改 r2cn.yaml, 添加仓库地址和维护者信息">
     ```yaml
     - name: "仓库的组织/名称"
       maintainers:
-      - id: "导师 GitHub ID"
+      - id: "维护者 GitHub ID"
         task: 2
         maxScore: 10
     ```
@@ -60,12 +60,12 @@ description: 开源项目必须在技术委员会会议上进行项目陈述，�
 
     <Note type="danger" title="注意事项">
       1. 如果一个开源项目有多个代码仓库，请在 r2cn.yaml 中添加多个仓库；
-      2. 一个仓库可以有多个导师，`maintainers` 要使用导师的 GitHub ID，不是邮箱地址；
-      3. Maintainer 必须拥有仓库的写权限，有权限批准 PR 的合入；
-      4. 开源项目初期同时发布任务数量限制为 **2** ，参加过开源之夏的开源项目同时发布任务数量初始为 **3** ；R2CN 技术委员会会定期评审任务完成和辅导质量，根据情况会逐步放宽同时发布任务的数量限制；
+      2. 一个仓库可以有多个维护者，`maintainers` 要使用维护者的 GitHub ID，不是邮箱地址；
+      3. 维护者必须拥有仓库的写权限，有权限批准 PR 的合入；
+      4. 开源项目初期同时发布任务数量限制为 **2** ，参加过开源之夏的开源项目同时发布任务数量初始为 **3** ；R2CN 技术委员会会定期评审任务完成和辅导质量，根据情况会逐步放宽同时发布任务的数量限制。
     </Note>
   </StepperItem>
   <StepperItem title="提交 PR 到 r2cn-dev/r2cn ">
-    修改完成后提交 PR 到 [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn) 仓库，等待技术委员会审核通过后合入 PR ，导师才可以发布实习任务。
+    修改完成后提交 PR 到 [r2cn-dev/r2cn](https://github.com/r2cn-dev/r2cn) 仓库，等待技术委员会审核通过后合入 PR ，维护者才可以发布实习任务。
   </StepperItem>
 </Stepper>
