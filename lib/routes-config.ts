@@ -39,7 +39,7 @@ export const ROUTES: EachRoute[] = [
         href: "/guidance",
       },
       {
-        title: "5. 提交任务代码",
+        title: "5. 提交代码和申请任务完成",
         href: "/commit",
       },
       {
