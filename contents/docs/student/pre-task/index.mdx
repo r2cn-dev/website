@@ -42,10 +42,11 @@ Options:
 测试任务需要学生自己设计，主要包括以下四种类型，完成其中任何一个任务即可：
 
 <Note type="success" title="测试任务类型">
-    1. 通过 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 和 Git 对比，找到缺失的特性并完成，完善 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的功能；
-    2. 增加 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 测试用例，提升 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 质量；
-    3. 开源社区存在很多 Git 增强功能的程序，分析这些程序的功能，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能；
-    4. 可自行设计 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 特性， 为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能，或者测试出一个 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 __Bug__ ，修复 __Bug__ 也可以作为测试任务；
+    1. 通过 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 和 Git 对比，找到缺失的特性并完成，完善 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的功能，通过测试任务的标准是实现 1 个以上的新功能；
+    2. 增加 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 测试用例，提升 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 质量，通过测试任务的标准新增 5 个以上的测试用例；
+    3. 开源社区存在很多 Git 增强功能的程序，分析这些程序的功能，为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能， 通过测试任务的标准实现 1 个以上的新功能；
+    4. 可自行设计 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 特性， 为 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 增加新的命令和功能，或者测试出一个 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 __Bug__ ，修复 __Bug__ 也可以作为测试任务， 通过测试任务的标准实现 1 个新功能或者修复 1 个 __Bug__ ；
+    5. [Buck2](https://buck2.build) 是 Meta 使用 Rust 开发的大型构建系统，构建的过程中需要编写 `BUCK` 文件。目前 Rust 三方库 `crate` 都没有对应的 `BUCK` 文件，所以为 [crates.io](https://crates.io) 中的 Crate 编写 `BUCK` 文件并且提交到 [buck2-rust-third-party](https://github.com/r2cn-dev/buck2-rust-third-party) 中亦可作为测试任务，通过测试任务的标准编写 5 个以上的 `BUCK` 文件或者修复 1 个以上 [buck2-rust-third-party](https://github.com/r2cn-dev/buck2-rust-third-party) 中 `BUCK` 文件错误；
 </Note>
 
 #### 1. libra 功能补全
@@ -115,11 +116,39 @@ usage: git init [-q | --quiet] [--bare] [--template=<template-directory>]
 
 当然也可以根据使用 Git 的经验，自行设计新的功能。请充分发挥自己的想象力，[Mega](https://github.com/web3infra-foundation/mega) 项目不会拒绝任何有创意的功能；或者测试出一个 [libra](https://github.com/web3infra-foundation/mega/tree/main/libra) 的 __Bug__ ，修复 __Bug__ 也可以作为测试任务。
 
-#### 5. 联系方式
+#### 5. 为 Crate 编写 BUCK 文件
+
+[Buck2](https://buck2.build) 是 Meta 使用 Rust 开发的大型构建系统，构建的过程中需要编写 `BUCK` 文件。目前 Rust 三方库 `crate` 都没有对应的 `BUCK` 文件，所以为 [crates.io](https://crates.io) 中的 Crate 编写 `BUCK` 文件并且提交到 [buck2-rust-third-party](https://github.com/r2cn-dev/buck2-rust-third-party) 中亦可作为测试任务。
+
+`crate` 文件下载地址的模板是 `https://static.crates.io/crates/{crate}/{crate}-{version}.crate` ， 以 `cfg-if` 为例 `1.0.0` ， 下载地址为 `https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate` ， 使用 `wget` 下载解压的参考命令为：
+
+```bash
+cd buck2-rust-third-party/third-party/rust/crates
+mkdir cfg-if
+cd cfg-if
+wget https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate
+tar -xvf cfg-if-1.0.0.crate
+rm cfg-if-1.0.0.crate
+mv cfg-if-1.0.0 1.0.0
+```
+
+<Note type="danger" title="提交代码注意事项">
+  1. 组织目录的标准为 `/third-party/rust/crates/{crate}/{version}` ， 如 `cfg-if` 的版本 `1.0.0` ， 下载地址为 `third-party/rust/crates/{crate}/{version}` ， 如 `cfg-if` 的版本 `1.0.0` ， 下载地址为 `URL_ADDRESS.crates.io/crates/cfg-if/cfg-if-1.0.0.crate`;
+  2. 有些 crate 目录包含了 GitHub 的工作流目录 `.github` 或者一些 IDE 的配置目录如 `.idea`， 需要在提交时删掉这些目录；
+  3. 在项目根目录的 `BUCK` 的 `deps` 中添加提交的项目和说明，如：
+```
+  # anstyle
+  # Example: `buck2 run //third-party/rust/crates/anstyle/1.0.10:dump-style`
+  "//third-party/rust/crates/anstyle/1.0.10:anstyle",
+  "//third-party/rust/crates/anstyle/1.0.10:dump-style",
+```
+</Note>
+
+#### 6. 联系方式
 
 如果对自行设计新功能，或对测试任务有疑问，可以和 [@genedna](https://github.com/genedna) 联系，如需讨论请发送邮件到 `eli@patch.sh` ，也可在 [论坛](https://github.com/orgs/r2cn-dev/discussions) 或 [R2CN Discord](https://discord.gg/WRp4TKv6rh) 的 `#pretask` 频道发起讨论。
 
-### 任务要求
+### 测试任务过程
 
 <Stepper>
   <StepperItem title="第一步：创建测试任务 Issue">
