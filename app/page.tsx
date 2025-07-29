@@ -21,7 +21,7 @@ export default function Home() {
         Native）开源实习计划由中国科学院软件研究所主办，目标是培养熟悉 RISC-V
         架构和 Rust 编程语言的高校开发者，构建 RISC-V 架构下的云原生技术栈。
       </p>
-      <div className="flex flex-row items-center gap-5">
+      <div className="flex flex-row flex-wrap items-center justify-center gap-5">
         <Link
           href="/docs/student/pre-task"
           className={buttonVariants({ className: "px-6", size: "lg" })}
