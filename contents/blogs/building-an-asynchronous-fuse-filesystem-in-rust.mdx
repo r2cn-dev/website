@@ -1,11 +1,11 @@
 ---
-title: "Building an asynchronous FUSE Filesystem in Rust"
-description: "本文介绍了使用 Rust 语言开发的用户态文件系统（FUSE）：libfuse-fs，我们使用它挂载 Overlay 文件系统，并成功执行了一系列包管理操作。"
+title: "Building an Asynchronous FUSE Filesystem in Rust"
+description: "This article presents libfuse-fs, a userspace file system (FUSE) developed in Rust. We used it to mount an Overlay file system and successfully performed a series of package management operations."
 date: 12-08-2025
 authors:
   - avatar: "https://avatars.githubusercontent.com/u/92281688?s=400&u=8c1f3ac10ef25742e4d69bd06b463b1939dfedc5&v=4"
     handle: Ricky-Daxia
-    username: 俞锐基
+    username: Rikcy-Daxia
     handleUrl: "https://github.com/Ricky-Daxia"
 cover: "https://img.freepik.com/free-vector/transfer-files-concept-landing-page_52683-24770.jpg"
 ---
@@ -101,7 +101,7 @@ https://github.com/cloud-hypervisor/fuse-backend-rs
 > 
 > <img src="/images/blogs/building-an-asynchronous-FUSE-filesystem-in-Rust/overlayfs.png" width="100%"/>
 
-### 3.1 🌰 Example: **Mounting an OverlayFS**
+### 3.1 Example: **Mounting an OverlayFS**
 
 -   With `nix`
 
@@ -152,7 +152,7 @@ Session::new(mount_options)
     .unwrap();
 ```
 
-### 3.2 📝 FUSE-Log
+### 3.2 FUSE-Log
 
 For easier debugging and observability, we developed a logging filesystem based on the FUSE trait specifically for log collection.
 
@@ -205,7 +205,7 @@ This design exemplifies the decorator pattern's power in Rust: using generics an
 
 Developing with FUSE often uncovers subtle interactions between the kernel, the FUSE library, and the filesystem implementation. In our case, we mounted an Ubuntu filesystem using OverlayFS of **libfuse-fs** and successfully executed a series of package management operations. The following section details some issues we encountered during this process, along with the approaches we used to resolve them.
 
-### 🧩 Segmentation Fault When Executing `apt update`
+### Segmentation Fault When Executing `apt update`
 
 #### Description
 
@@ -256,7 +256,7 @@ let res = f.write(data)?;
 
 The fix itself was straightforward, but this experience reaffirmed that real-world concurrency bugs are notoriously difficult to debug.
 
-### 🧩 No Such File or Directory?
+### No Such File or Directory?
 
 #### Description
 
@@ -306,7 +306,7 @@ In fact, there is a known pattern called **"create-and-unlink"**. To create an a
 
 A robust filesystem should handle such cases correctly.
 
-### 🧩 Something About `link`
+### Something About `link`
 
 #### Description
 
@@ -397,3 +397,8 @@ We also discovered that `libfuse-fs` itself does not handle hard links properly 
 Diagnosing application-level errors that originate from underlying filesystem issues can be tricky—especially when working with complex codebases. To make troubleshooting easier, it’s best to narrow the debug scope and use the minimal set of operations needed to reproduce the problem. Equally important is having a well-structured logging system that surfaces actionable, relevant details.
 
 If you’re exploring FUSE filesystems or looking for a lightweight, practical starting point, we invite you to try **libfuse-fs**. Whether you want to integrate it into your own project, experiment with new ideas, or help improve its capabilities, your contributions are welcome and valued.
+
+## Authors
+
+- [Ruiji Yu](https://github.com/Ricky-Daxia), Nanjing University
+- [Xiaoyang Han](https://github.com/Ivanbeethoven/), University of Science and Technology Beijing
