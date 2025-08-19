@@ -1,13 +1,13 @@
 ---
 title: "RKL: A Docker-like Command-line Interface Built in Rust"
-description: "This article presents libfuse-fs, a userspace file system (FUSE) developed in Rust. We used it to mount an Overlay file system and successfully performed a series of package management operations."
+description: "This article introduces RKL, a Rust-based CRI CLI that unifies Kubernetes pods, Docker Compose apps, and standalone containers into a single runtime, bridging developer-friendly workflows with production-grade orchestration."
 date: 19-08-2025
 authors:
   - avatar: "https://avatars.githubusercontent.com/u/88044427?v=4"
     handle: erasernoob
     username: erasernoob
     handleUrl: "https://github.com/erasernoob"
-    src: "/images/blogs/rkl-cli-built-in-rust/cover.png"
+cover: "/images/blogs/rkl-cli-built-in-rust/cover.jpg"
 ---
 
 RKL ([rk8s](https://github.com/r2cn-dev/rk8s) Container Runtime Interface) represents a modern approach to container orchestration, implementing a unified runtime that supports **three distinct workload paradigms** while maintaining compatibility with both Kubernetes CRI specifications and Docker Compose workflows. Built on top of the [Youki](https://github.com/youki-dev/youki) container runtime, RKL bridges the gap between developer-friendly tooling and production-grade container orchestration.
