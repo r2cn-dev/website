@@ -1,0 +1,351 @@
+---
+title: "RKL: A Docker-like Command-line Interface Built in Rust"
+description: "This article introduces RKL, a Rust-based CRI CLI that unifies Kubernetes pods, Docker Compose apps, and standalone containers into a single runtime, bridging developer-friendly workflows with production-grade orchestration."
+date: 19-08-2025
+authors:
+  - avatar: "https://avatars.githubusercontent.com/u/88044427?v=4"
+    handle: erasernoob
+    username: erasernoob
+    handleUrl: "https://github.com/erasernoob"
+cover: "/images/blogs/rkl-cli-built-in-rust/cover.png"
+---
+
+RKL ([rk8s](https://github.com/r2cn-dev/rk8s) Container Runtime Interface) represents a modern approach to container orchestration, implementing a unified runtime that supports **three distinct workload paradigms** while maintaining compatibility with both Kubernetes CRI specifications and Docker Compose workflows. Built on top of the [Youki](https://github.com/youki-dev/youki) container runtime, RKL bridges the gap between developer-friendly tooling and production-grade container orchestration.
+
+> What is Youki? And why Youki?
+> 
+> Youki is an implementation of the [OCI runtime-spec](https://github.com/opencontainers/runtime-spec) **written in Rust**.
+> While there are plenty of nice container runtime built in different programming language, mostly in Go and C. Like [runc](https://github.com/opencontainers/runc) and [crun](https://github.com/containers/crun), Youki brings two major advantages: 
+> 1. **Safety through Rust**
+>
+> As we all know, the container runtime requires the use of system calls(e.g. namespaces, fork(2)), which could be tricky for Go, sometimes. As for C, Rust provides the benefit of memory safety.
+>
+> 2. **Performance**
+>
+>Here, Youki provides a simple benchmark, measuring a container's full lifestyle from creation to deletion:
+>
+> |Runtime|Time (mean ± σ)|Range (min … max)|vs youki(mean)|Version|
+> |---|---|---|---|---|
+> |youki|111.5 ms ± 11.6 ms|84.0 ms ± 142.5 ms|100%|0.3.3|
+> |runc|224.6 ms ± 12.0 ms|190.5 ms ± 255.4 ms|200%|1.1.7|
+> |crun|47.3 ms ± 2.8 ms|42.4 ms ± 56.2 ms|42%|1.15|
+>
+> (more details refer to [here](https://github.com/youki-dev/youki?tab=readme-ov-file#-motivation))
+
+
+In this article, we will cover the following topics:
+- A brief overview of `kubectl` and Docker compose
+- The implementation, architecture, and design philosophy of RKL
+- Challenges we encountered during the development 
+- Future Roadmap
+## Comparative Analysis: _kubectl_ vs _docker-compose_ Paradigms
+### _kubectl_: Declarative Container Orchestration
+The `kubectl` paradigm follows a **declarative model**: users describe the _desired state_ of their workloads in **YAML manifests**, and Kubernetes continuously reconciles the actual cluster state to match it.
+- **Strengths**: This model is highly reliable in production, offering features such as rolling updates, automatic restarts, resource limits, and sophisticated scheduling across nodes. It’s ideal for **large-scale, fault-tolerant deployments** where consistency is critical.
+- **Limitations**: Writing and managing YAML manifests can feel verbose and complex, especially for developers who just want to run a few containers quickly. It often requires a steep learning curve and additional tooling.
+
+The following is a basic [Pod Specification](https://kubespec.dev/kubernetes/v1/Pod) in Kubernetes:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-pod
+spec:
+  containers:
+    - name: web
+      image: nginx:1.25
+      ports:
+        - containerPort: 80
+    - name: sidecar
+      image: busybox
+      command: ["sh", "-c", "while true; do echo hello; sleep 5; done"]
+```
+This Pod runs two containers (`nginx` and `busybox`) in the **same network and namespace**, which allows them to communicate via `localhost`. Kubernetes will ensure the Pod remains in the desired state.
+> What is a Pod?
+> A Pod is the smallest deployable unit in Kubernetes. It groups one or more containers together with **shared namespaces and filesystem volumes**, so that they behave as a single cohesive unit.
+> 
+> To make this possible, Kubernetes introduces a special “invisible” container called the **pause container**. The pause container holds the shared namespaces (network, IPC, etc.), while the other containers join these namespaces. This is what makes multiple containers in a Pod act as if they are running inside a single environment.
+> <img src="/images/blogs/rkl-cli-built-in-rust/pods.png" width="100%"/>
+> In rk8s, you can find the **pause** container's bundles [here](https://github.com/r2cn-dev/rk8s/tree/main/project/test/bundles/pause).
+### _docker-compose_: Developer-Centric Multi-Container Applications
+
+Docker Compose takes a **developer-first approach**. Instead of defining desired state in YAML manifests for a cluster, developers use a simple `docker-compose.yml` file to describe services, networks, and volumes. A single `docker-compose up` command can then launch the entire application stack.
+- **Strengths**: Compose abstracts away container networking and dependencies with a minimal configuration syntax. It’s highly intuitive, making it perfect for **local development, testing, and small-scale deployments**.
+- **Limitations**: While convenient, Compose lacks advanced scheduling, scaling, and self-healing features. It’s not designed for managing large, production-grade clusters.
+
+Unlike a Pod, multiple containers in a Compose application do **not** share the same namespaces. Instead, Compose automatically creates a dedicated network and connects each service to it. Containers communicate with one another via **service names** (e.g., `web`, `sidecar`), rather than through `localhost`.
+
+<img src="/images/blogs/rkl-cli-built-in-rust/docker.jpg" width="100%"/>
+
+Here’s a minimal example that mirrors the Pod spec shown earlier:
+```YAML
+version: "3"
+services:
+  web:
+    image: nginx:1.25
+    ports:
+      - "8080:80"
+  sidecar:
+    image: busybox
+    command: sh -c "while true; do echo hello; sleep 5; done"
+```
+### RKL’s Unified Approach
+
+RKL bridges these two worlds by offering a **Tri-modal interface**:
+- Manage **standalone containers** (similar to `docker run`)
+- Launch **pods with shared namespaces** (Kubernetes-style)
+- Orchestrate **multi-container applications** (Compose-style)
+
+All through a **single, Rust-based CLI**. This unified approach lowers the entry barrier for developers while still providing a pathway to production-oriented workflows. RKL **supports both Kubernetes-style pod specifications and Docker Compose files**, enabling developers to choose the paradigm that best fits their use case without switching tools.
+
+For example:
+- A Kubernetes pod YAML can be used directly with RKL to create tightly coupled containers with shared namespaces.
+- A `docker-compose.yml` file can be launched as a multi-service application with automatic network and volume management.
+
+This Tri-modal capability allows RKL to **unify local development and cluster-ready orchestration** in one CLI, simplifying the container workflow.
+## Architecture and Implementation
+### Integration
+RKL leverages several awesome libraries to streamline container management and networking:
+- **libcontainer**: Handles OCI runtime operations and container lifecycle management
+- **libcgroups**: Enforces resource constraints on containers
+- **libbridge**: Implements a CNI networking plugin for container connectivity
+>**Libbridge** is an advanced CNI plugin for configuring and managing bridge network interfaces in containerized environments. It provides several key features that support our "bridge" network solution:
+>- **VLAN management**
+>- **Robust error handling**
+>- **Custom bridge network configuration**
+>
+>Also, you can find more details [here](https://github.com/r2cn-dev/rk8s/tree/main/project/libbridge).
+
+### Core Design Philosophy
+RKL's architecture embodies three fundamental principles:
+1. **Runtime Unification**: Single codebase supporting multiple workload types
+2. **CRI Compliance**: Full Container Runtime Interface implementation for Kubernetes compatibility
+3. **Developer Experience**: Familiar interfaces reducing cognitive overhead
+### Three-Tier Workload Architecture
+#### 1. Single Container Workloads
+
+Single container management forms the foundational layer of RKL, providing **direct lifecycle control** over individual containers. This workload type is ideal for **testing, debugging, or running lightweight services** without the overhead of orchestration frameworks.
+
+RKL integrates **libcontainer** to manage container creation, start, stop, and deletion operations. Resource limits are enforced via **cgroups**, while port mapping, network configuration, and volume mounts are handled automatically by the runtime.
+
+Key capabilities of single-container workloads:
+
+- **Resource enforcement**: CPU and memory limits prevent a single container from monopolizing host resources.
+    
+- **Networking**: Automatic bridge network setup allows containers to expose ports and communicate externally.
+    
+- **Storage isolation**: Volume mounting ensures persistent or shared storage across container runs.
+    
+- **Process supervision**: CLI provides real-time monitoring, logs, and exit codes.
+    
+
+Example specification:
+```yaml
+name: single-container-test
+image: ./bundles/busybox
+resources:
+  limits:
+    cpu: 500m
+    memory: 233Mi
+args:
+  - sleep
+  - "100"
+```
+
+> In this example, a lightweight BusyBox container runs a simple `sleep` command. Single-container workloads serve as the **building blocks** for more complex pod and Compose-style applications in RKL.
+#### 2. Kubernetes-Style Pod Workloads
+
+Pod workloads implement the **Kubernetes pod model**, where multiple containers run in **shared namespaces** to allow tight coupling and inter-container communication. RKL uses a **pause container** to maintain shared namespaces and orchestrates other containers within that sandbox.
+
+Key aspects of RKL pod workloads:
+
+- **Pause Container Sandbox**: A minimal container that holds shared namespaces (PID, Network, IPC, UTS). All other containers in the pod join these namespaces, allowing them to communicate over `localhost` and share volumes.
+    
+- **Workload Container Integration**: Containers are launched and attached to the pause container, inheriting its namespaces while still allowing per-container resource limits.
+    
+- **Resource Management**: CPU, memory, and other constraints are enforced individually for each container, ensuring predictable performance.
+    
+- **Network Isolation**: Pod networking is configured using the **libbridge CNI plugin**, supporting bridge networks, VLANs, and custom configurations.
+- **Daemon Mode**: RKL runs as a background process that monitors changes to the `pod.yaml` file in the `/etc/rk8s/manifests` directory. When the file content changes, RKL automatically updates the current state of the pod to match the specification in `pod.yaml`.
+
+The **pod lifecycle** in RKL involves:
+1. Creating a pod sandbox configuration.
+2. Launching the pause container to establish shared namespaces.
+3. Configuring pod networking and bridge connections.
+4. Launching workload containers within the namespace, respecting resource limits.
+#### 3. Compose-Style Multi-Container Applications
+
+The **Compose workload type** allows RKL to orchestrate **service-oriented multi-container applications**, translating Docker Compose YAML specifications into runtime operations. This layer provides developers with a **developer-first experience** while maintaining container isolation, networking, and volume management.
+
+Key features of Compose-style workloads:
+
+- **Service Definition Parsing**: RKL parses YAML service specifications (`services`, `volumes`, `networks`) to generate runtime container configurations.
+- **Network Management**: Automatically creates **bridge networks** for service connectivity. Services can communicate by name using DNS-like resolution.
+- **Volume Management**: Supports bind mounts and managed volumes for persistent storage across container restarts.
+- **Dependency Resolution**: Ensures services start in the correct order based on `depends_on` and performs **health checks** to orchestrate startup.
+- **Environment & Configuration Injection**: Injects environment variables and configuration files into services at runtime, mirroring Docker Compose behavior.
+### Key Design In the Source Code
+#### Main CLI Structure
+RKL CLI provides a **unified entry point** for managing standalone containers, pods, and multi-container applications. Each workload type has its own command set, making it easy to operate different scenarios.
+```rust
+impl Cli {
+    pub fn run(self) -> Result<(), anyhow::Error> {
+        match self.workload {
+            Workload::Pod(cmd) => pod_execute(cmd),
+            Workload::Container(cmd) => container_execute(cmd),
+            Workload::Compose(cmd) => compose_execute(cmd),
+        }
+    }
+}
+
+#[derive(Subcommand)]
+enum Workload {
+    #[command(subcommand, about = "Operations related to pods", alias = "p")]
+    Pod(PodCommand),
+
+    #[command(subcommand, about = "Manage standalone containers", alias = "c")]
+    Container(ContainerCommand),
+
+    #[command(subcommand, about = "Manage multi-container apps using compose", alias = "C")]
+    Compose(ComposeCommand),
+}
+```
+- **[Pod Commands](https://github.com/r2cn-dev/rk8s/blob/9fc11a7edef4fce4ed8ac1aaa92cbfb6139ef65a/project/rkl/src/lib.rs#L98)**: `run`, `create`, `start`, `delete`, `state`, `exec`, [daemon mode](https://github.com/r2cn-dev/rk8s/tree/main/project/rkl/src/daemon)
+- **[Container Commands](https://github.com/r2cn-dev/rk8s/blob/9fc11a7edef4fce4ed8ac1aaa92cbfb6139ef65a/project/rkl/src/lib.rs#L55)**: container lifecycle management
+- **[Compose Commands](https://github.com/r2cn-dev/rk8s/blob/9fc11a7edef4fce4ed8ac1aaa92cbfb6139ef65a/project/rkl/src/lib.rs#L11)**: up, down, ps
+#### CPU & Memory Resource Parsing
+When parsing the `resource` field in a pod spec, Kubernetes uses a different format than Linux `cgroups`. To handle this issue, we offer a solution. This following function converts K8s resource expressions into Linux cgroup-compatible values:
+```rust
+fn parse_resource(
+    cpu: Option<String>,
+    memory: Option<String>,
+) -> Result<LinuxContainerResources, anyhow::Error> {
+    let mut res = LinuxContainerResources::default();
+
+    // CPU: "1" → cores, "500m" → milli-cores
+    if let Some(c) = cpu {
+        let period = 1_000_000;
+        let quota = if c.ends_with("m") {
+            c[..c.len() - 1].parse::<i64>()? * period / 1000
+        } else {
+            (c.parse::<f64>()? * period as f64) as i64
+        };
+        res.cpu_period = period;
+        res.cpu_quota = quota;
+    }
+
+    // Memory: "1Gi", "512Mi", "256Ki"
+    if let Some(m) = memory {
+        let mem = if m.ends_with("Gi") {
+            m[..m.len()-2].parse::<i64>()? * 1024 * 1024 * 1024
+        } else if m.ends_with("Mi") {
+            m[..m.len()-2].parse::<i64>()? * 1024 * 1024
+        } else if m.ends_with("Ki") {
+            m[..m.len()-2].parse::<i64>()? * 1024
+        } else { return Err(anyhow!("Invalid memory: {}", m)); };
+        res.memory_limit_in_bytes = mem;
+    }
+
+    Ok(res)
+}
+```
+By this implementation, RKL gains stronger resource handling:
+- **CPU**: Supports cores (`"1"`) and milli-cores (`"500m"`).
+- **Memory**: Supports `"Gi"`, `"Mi"`, `"Ki"`.
+- **Output**: Returns `LinuxContainerResources` ready for cgroup enforcement.
+#### Core Components 
+`PodTask` is the core data structure representing a complete pod specification. It follows Kubernetes API conventions with:
+- **apiVersion**: API version identifier
+- **kind**: Resource type (always "Pod")
+- **metadata**: Pod metadata including name, labels, and annotations
+- **spec**: Pod specification containing container definitions
+```rust
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PodTask {
+    #[serde(rename = "apiVersion")]
+    pub api_version: String,
+    #[serde(rename = "kind")]
+    pub kind: String,
+    pub metadata: ObjectMeta,
+    pub spec: PodSpec,
+}
+```
+[`TaskRunner`](https://github.com/r2cn-dev/rk8s/blob/9fc11a7edef4fce4ed8ac1aaa92cbfb6139ef65a/project/rkl/src/task.rs#L119) is the core component in RKL that implements the Container Runtime Interface(CRI) for managing pod lifecycles：
+```rust
+pub struct TaskRunner {
+    pub task: PodTask,
+    pub pause_pid: Option<i32>, // pid of pause container
+    pub sandbox_config: Option<PodSandboxConfig>,
+}
+```
+- `task`: A `PodTask` containing the YAML configuration
+- `pause_pid`: The process ID of the pause container (pod sandbox)
+- `sandbox_config`: The CRI `PodSandboxConfig` for the pod
+
+[`ComposeManager`](https://github.com/r2cn-dev/rk8s/blob/9fc11a7edef4fce4ed8ac1aaa92cbfb6139ef65a/project/rkl/src/commands/compose/mod.rs#L36) is the core component in RKL responsible for managing Docker Compose-style multi-container applications. It is defined as:
+```rust
+pub struct ComposeManager {
+    /// the path to store the basic info of compose application
+    root_path: PathBuf,
+    project_name: String,
+    containers: Vec<State>,
+    network_manager: NetworkManager,
+    volume_manager: VolumeManager,
+    config_manager: ConfigManager,
+}
+```
+- `root_path`: PathBuf for storing compose application state(currently in `/run/youki/compose/<compose-name>`)
+- `project_name`: String identifier for the compose project
+- `network_manager`: [`NetworkManager`](https://github.com/r2cn-dev/rk8s/blob/main/project/rkl/src/commands/compose/network.rs)for handling compose networks
+- `volume_manager`: [`VolumeManager`](https://github.com/r2cn-dev/rk8s/blob/main/project/rkl/src/commands/compose/volume.rs) for handling volume mounts
+
+Both `NetworkManager` and `VolumeManager` play a critical role in implementing the network and volume configurations for compose applications. They maintain the mapping relationships between services and their associated networks or volumes.
+## Development Challenges
+### WSL Environment Limitations
+A significant development or usage issue emerged when attempting to run RKL within **Windows Subsystem for Linux (WSL)** environments. The libbridge CNI plugin, which is fundamental to RKL's bridge networking architecture, requires the ability to create virtual ethernet (veth) pairs for container-to-host network connectivity. 
+
+However, WSL's virtualized Linux kernel lacks full support for some network namespace operations, in this case, the creation of veth pairs that span between container and host network namespaces. This limitations will cause RKL's failure on starting a container successfully.
+
+As a result, when using or developing with RKL, avoid WSL. Instead, use a **native Linux machine** or a **Linux VM**.
+### Compose-Style Network Behavior
+
+A major challenge during development was implementing **Docker Compose–compatible networking behavior** within RKL’s pod-based architecture. The primary issues included:
+#### Network Namespace Coordination
+In traditional Docker Compose, each container runs in its own network namespace and is then connected via **bridge networks**. In contrast, RKL’s pod-based model requires careful coordination between the **pause container’s network namespace** and the connectivity requirements of individual services.
+
+To address this, we introduce a **network “adapter”** to reconcile Compose-style network configurations with the pod-based network model, which is handled in `NetworkManager`.
+
+```rust
+pub struct NetworkManager {
+    map: HashMap<String, NetworkSpec>,
+    /// key: network_name; value: bridge interface
+    network_interface: HashMap<String, String>,
+    /// key: service_name value: networks
+    service_mapping: HashMap<String, Vec<String>>,
+    /// key: network_name value: (srv_name, service_spec) k
+    network_service: HashMap<String, Vec<(String, ServiceSpec)>>,
+    is_default: bool,
+    project_name: String,
+}
+```
+
+The implementation creates network mappings that group services by network affiliation, then establishes containers within appropriate network contexts while maintaining service-to-service connectivity through the libbridge CNI plugin.
+
+By default, if no network is explicitly defined, RKL will **automatically** create a bridge network named `<project-name>_default`, mirroring Docker Compose's behavior.
+#### Container State Management
+Managing the state of multi-container applications across different workload types—while ensuring consistency and supporting proper cleanup—posed significant architectural challenges.
+
+**Resolution**: we adopts a **hierarchical state management** approach, implemented **through folder-based isolation**: compose applications maintain **project-level state**, while individual containers track **runtime state**. This design provides both granular control at the container level and coordinated operations at the application level.
+
+## Future Development Roadmap
+RKL currently serves as a foundational container runtime with several architectural constraints that present opportunities for enhancement.
+### Current Limitations
+- **Privilege Requirements**: RKL requires root-level access for container operations due to its direct integration with low-level system resources, including cgroups, namespaces, and network interfaces.
+- **Image Management**: The runtime currently relies on pre-extracted OCI bundles stored as local filesystem directories, lacking support for dynamic image distribution and caching.
+- **Deployment Scope**: RKL functions solely as a standalone container launcher and does not provide distributed orchestration for multi-node deployments.
+- **Network Architecture**: Networking is limited to bridge-based connectivity via the libbridge CNI plugin, restricting support for advanced network topologies.
+### Strategic Development Initiatives
+- **Image Distribution Integration**: Ongoing development aims to incorporate an OCI-compliant distribution service, enabling dynamic image pulling, caching, and registry integration, thereby eliminating reliance on pre-extracted bundles.
+- **Cluster Orchestration**: Future iterations will integrate RKL with the [RKS](https://github.com/r2cn-dev/rk8s/tree/main/project/rks) control plane, supporting distributed pod scheduling, node registration, and cluster-wide state management. This will evolve RKL from a standalone runtime into a full-fledged container orchestration platform with centralized control plane coordination.
+
+For more detailed usage of RKL, please refer to the [official documentation](https://github.com/r2cn-dev/rk8s/tree/main/project/rkl).
