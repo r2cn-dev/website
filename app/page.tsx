@@ -14,7 +14,7 @@ export default function Home() {
         开源项目加入 R2CN <MoveUpRightIcon className="w-4 h-4 font-extrabold" />
       </Link>
       <h1 className="text-3xl font-bold mb-4 sm:text-6xl">
-        RISC-V Rust for Cloud Native 开源实习计划
+        RISC-V Rust for Cloud Native 2025 年度 第一期 实习计划于 2026 年 3 月 31 日结束，新的实习计划请关注公众号 git_rust_opensource 动态
       </h1>
       <p className="mb-8 sm:text-lg max-w-[800px] text-muted-foreground">
         R2CN（RISC-V Rust for Cloud
